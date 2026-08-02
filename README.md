@@ -85,7 +85,6 @@ To run outside Docker, install dependencies from the lockfile and execute the ch
 ```bash
 npm ci
 npm run check
-npm test
 ```
 
 Set the required runtime environment before starting `node src/index.js`; the [Installation Guide](docs/installation-guide/index.md) describes both local and Compose operation.
