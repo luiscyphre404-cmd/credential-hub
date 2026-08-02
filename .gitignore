@@ -1,0 +1,108 @@
+# ==========================================
+# Credential Hub / Token Manager
+# ==========================================
+
+# ------------------------------------------
+# Secrets / Environment
+# ------------------------------------------
+.env
+.env.*
+!.env.example
+
+# ------------------------------------------
+# Dependencies
+# ------------------------------------------
+node_modules/
+
+# ------------------------------------------
+# Runtime / Local Data
+# ------------------------------------------
+/storage/
+backup/
+tmp/
+temp/
+
+# ------------------------------------------
+# Build Output
+# ------------------------------------------
+dist/
+build/
+coverage/
+
+# ------------------------------------------
+# Archives / Update Packages
+# ------------------------------------------
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.patch
+
+# ------------------------------------------
+# Backup Files
+# ------------------------------------------
+*.bak
+*.bak*
+*.old
+*.orig
+*.save
+
+# ------------------------------------------
+# Logs
+# ------------------------------------------
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ------------------------------------------
+# IDE / Editor
+# ------------------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ------------------------------------------
+# Operating System
+# ------------------------------------------
+.DS_Store
+Thumbs.db
+
+# ------------------------------------------
+# Local npm artifacts
+# ------------------------------------------
+node
+npm
+token-manager@*
+
+# ------------------------------------------
+# Optional local test data
+# ------------------------------------------
+*.pid
+*.seed
+
+# Nested copied project directory
+/token-manager/
+
+# Embedded local git repositories / exports
+docs/credential-hub-git-repository/
+**/credential-hub-git-repository/
+
+# Legacy update packages
+/MS7_Closure_Documentation/
+/MS8_F1_Source_Update/
+
+# Legacy Office exports
+*.doc
+*.docx
+*.odt
+
+# ------------------------------------------
+# Documentation build artifacts
+# ------------------------------------------
+site/
+.pdf-cache/
+docs/pdf/
+docs/**/*.pdf

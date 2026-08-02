@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Credential HUB – Consumer</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="consumer-header">
+    <p class="eyebrow">Credential HUB</p>
+    <h1>Consumer access</h1>
+  </header>
+
+  <main class="consumer-main">
+    <section class="consumer-panel" aria-labelledby="consumer-title">
+      <h2 id="consumer-title">Connect a Consumer</h2>
+      <p>Enter a Consumer API token to continue. The token remains in memory for this page only.</p>
+      <form id="consumer-token-form" class="consumer-form">
+        <label for="consumer-token">Consumer API token</label>
+        <input id="consumer-token" name="consumer-token" type="password" autocomplete="off" spellcheck="false">
+        <button type="submit" data-testid="consumer-discovery-submit">Test connection</button>
+      </form>
+      <p id="consumer-status" class="consumer-status" role="status" aria-live="polite">Enter a Consumer API token to test the connection.</p>
+    </section>
+
+    <section id="consumer-discovery" class="consumer-panel" aria-labelledby="discovery-title">
+      <h2 id="discovery-title">Available credentials</h2>
+      <div id="consumer-discovery-results" aria-live="polite">
+        <p class="consumer-empty">No discovery results yet.</p>
+      </div>
+    </section>
+
+    <section id="consumer-secret-selection" class="consumer-panel" aria-labelledby="secret-selection-title" hidden>
+      <h2 id="secret-selection-title">Select secret fields</h2>
+    </section>
+
+    <section id="consumer-resolve-results" class="consumer-panel" aria-labelledby="resolve-results-title" hidden>
+      <h2 id="resolve-results-title">Resolved secrets</h2>
+      <div id="consumer-resolve-result-list"></div>
+    </section>
+  </main>
+
+  <script type="module" src="./consumer.js"></script>
+</body>
+</html>

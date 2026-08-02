@@ -1,0 +1,71 @@
+site_name: Credential HUB Documentation
+site_description: Public Release 1.0 Beta 1 documentation for Credential HUB
+site_author: cyphre-san productions
+
+docs_dir: docs
+site_dir: site
+repo_name: luiscyphre404-cmd/credential-hub
+repo_url: https://github.com/luiscyphre404-cmd/credential-hub
+edit_uri: ""
+
+nav:
+  - Handbook: index.md
+  - Quick Start: quick-start-guide/index.md
+  - Installation Guide: installation-guide/index.md
+  - User Guide: user-guide/index.md
+  - Security Guide: security-guide/index.md
+  - API Reference: api-reference/index.md
+  - Configuration Reference: configuration-reference/index.md
+  - Developer Guide: developer-guide/index.md
+  - Providers: providers/README.md
+  - Community: https://discord.gg/exTu3Dy2UW
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.tabs.link
+  palette:
+    - scheme: default
+      primary: blue grey
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Toggle dark mode
+    - scheme: slate
+      primary: blue grey
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Toggle light mode
+
+plugins:
+  - search
+  - mermaid2
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.tasklist
+  - pymdownx.highlight
+  - pymdownx.inlinehilite

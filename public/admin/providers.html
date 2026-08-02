@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Credential HUB – Custom providers</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div><p class="eyebrow">Credential HUB</p><h1 data-i18n="providers.title">Custom providers</h1></div>
+    <nav class="app-nav" id="app-navigation"></nav>
+    <span class="badge" id="provider-status" data-i18n="providers.loading">Preparing provider wizard…</span>
+  </header>
+  <main class="layout provider-onboarding-layout">
+    <aside class="sidebar" aria-label="Provider onboarding steps" data-i18n-aria-label="providers.steps">
+      <ol class="steps">
+        <li class="active" data-provider-step-indicator="1" data-i18n="providers.step1">1. Provider details</li>
+        <li data-provider-step-indicator="2" data-i18n="providers.step2">2. Credential methods</li>
+        <li data-provider-step-indicator="3" data-i18n="providers.step3">3. Credential fields</li>
+        <li data-provider-step-indicator="4" data-i18n="providers.step4">4. Review</li>
+      </ol>
+    </aside>
+    <section class="panel" aria-live="polite">
+      <div id="provider-error" class="alert hidden" role="alert"></div>
+      <div id="provider-success" class="alert success-alert hidden" role="status"></div>
+      <section class="provider-onboarding-step" data-provider-step="1">
+        <p class="eyebrow" data-i18n="providers.stepLabel1">Step 1</p><h2 data-i18n="providers.detailsTitle">Provider details</h2>
+        <p data-i18n="providers.detailsHelp">Create a declarative provider definition. It contains metadata only and never secrets or executable configuration.</p>
+        <form id="provider-details-form" class="form wide-form">
+          <div class="field"><label for="provider-display-name" data-i18n="providers.name">Provider name</label><input id="provider-display-name" name="displayName" required maxlength="120" autocomplete="off"></div>
+          <div class="field"><label for="provider-key" data-i18n="providers.id">Provider ID</label><input id="provider-key" name="key" required pattern="[a-z][a-z0-9-]{1,62}" maxlength="63" placeholder="for example: internal-api" data-i18n-placeholder="providers.idPlaceholder" aria-describedby="provider-key-help" autocomplete="off"><small id="provider-key-help" data-i18n="providers.idHelp">Lowercase letters, numbers, and hyphens. This ID cannot be changed after creation.</small></div>
+          <div class="field"><label for="provider-category" data-i18n="providers.category">Category</label><input id="provider-category" name="category" required maxlength="80" placeholder="for example: internal service" data-i18n-placeholder="providers.categoryPlaceholder" autocomplete="off"></div>
+          <div class="field"><label for="provider-description" data-i18n="providers.description">Description</label><textarea id="provider-description" name="description" rows="3" maxlength="500"></textarea></div>
+        </form>
+        <section class="provider-boundaries"><h3 data-i18n="providers.boundariesTitle">Supported boundaries</h3><p data-i18n="providers.boundariesHelp">Custom providers support declarative metadata, credential methods, credential fields, method bindings, and display metadata.</p><p data-i18n="providers.boundariesExcluded">OAuth, provider-configuration fields, runtime operations, code, hooks, scripts, and provider-definition secrets are not supported and are rejected.</p></section>
+      </section>
+      <section class="provider-onboarding-step hidden" data-provider-step="2">
+        <p class="eyebrow" data-i18n="providers.stepLabel2">Step 2</p><h2 data-i18n="providers.methodsTitle">Credential methods</h2>
+        <p data-i18n="providers.methodsHelp">Add at least one method. Each method is selectable in the Credential Wizard after this provider is saved.</p>
+        <div id="provider-methods"></div>
+        <button class="secondary" type="button" id="add-provider-method" data-i18n="providers.addMethod">Add credential method</button>
+      </section>
+      <section class="provider-onboarding-step hidden" data-provider-step="3">
+        <p class="eyebrow" data-i18n="providers.stepLabel3">Step 3</p><h2 data-i18n="providers.fieldsTitle">Credential fields and method bindings</h2>
+        <p data-i18n="providers.fieldsHelp">Add the fields that an administrator enters for each credential method. Mark sensitive values as secrets; secrets belong to credentials, not this provider definition.</p>
+        <div id="provider-fields"></div>
+        <button class="secondary" type="button" id="add-provider-field" data-i18n="providers.addField">Add credential field</button>
+      </section>
+      <section class="provider-onboarding-step hidden" data-provider-step="4">
+        <p class="eyebrow" data-i18n="providers.stepLabel4">Step 4</p><h2 data-i18n="providers.reviewTitle">Review and create</h2>
+        <p data-i18n="providers.reviewHelp">Review the declarative definition before it is saved. The new provider becomes selectable in the Credential Wizard immediately after a successful response.</p>
+        <div id="provider-review" class="summary"></div>
+      </section>
+      <nav class="actions" aria-label="Provider onboarding navigation" data-i18n-aria-label="providers.navigation"><button class="secondary" type="button" id="provider-back" data-i18n="common.back">Back</button><button class="primary" type="button" id="provider-next" data-i18n="common.next">Next</button><button class="primary hidden" type="button" id="provider-create" data-i18n="providers.create">Create provider</button></nav>
+    </section>
+  </main>
+  <footer class="app-footer" id="app-footer"></footer>
+  <script type="module" src="./providers.js"></script>
+</body>
+</html>

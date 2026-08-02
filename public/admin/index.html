@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Credential HUB – Credential Wizard</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">Credential HUB</p>
+      <h1>Credential Wizard</h1>
+    </div>
+    <nav class="app-nav" id="app-navigation"></nav>
+    <span class="badge" id="api-status">API wird geprüft…</span>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar" aria-label="Wizard-Schritte">
+      <ol class="steps">
+        <li class="active" data-step-indicator="1">1. Authentifizierung</li>
+        <li data-step-indicator="2">2. Provider</li>
+        <li data-step-indicator="3">3. Daten</li>
+        <li data-step-indicator="4">4. Autorisierung</li>
+        <li data-step-indicator="5">5. Prüfung</li>
+      </ol>
+    </aside>
+
+    <section class="panel" aria-live="polite">
+      <div id="wizard-error" class="alert hidden" role="alert"></div>
+
+      <div class="wizard-progress" aria-label="Wizard-Fortschritt">
+  <div class="wizard-progress-meta">
+    <span id="wizard-progress-current">Schritt 1 von 5</span>
+    <span id="wizard-progress-label">Typ auswählen</span>
+  </div>
+  <div class="wizard-progress-track">
+    <div id="wizard-progress-bar" class="wizard-progress-bar" role="progressbar" aria-valuemin="1" aria-valuemax="5" aria-valuenow="1"></div>
+  </div>
+</div>
+
+      <section class="wizard-step" data-step="1">
+        <p class="eyebrow">Schritt 1</p>
+        <h2>Authentifizierungsart auswählen</h2>
+        <p>Die verfügbaren Authentifizierungsarten werden aus den registrierten Providerdefinitionen geladen.</p>
+        <div class="card-grid" id="type-options"></div>
+      </section>
+
+      <section class="wizard-step hidden" data-step="2">
+        <p class="eyebrow">Schritt 2</p>
+        <h2>Provider auswählen</h2>
+        <p>Die Providerliste kommt direkt aus dem eingefrorenen Backend-Vertrag.</p>
+        <div class="toolbar">
+          <input id="provider-search" type="search" placeholder="Provider suchen…" aria-label="Provider suchen" data-i18n-placeholder="wizard.provider.search" data-i18n-aria-label="wizard.provider.search">
+        </div>
+        <div class="card-grid" id="provider-options"></div>
+      </section>
+
+      <section class="wizard-step hidden" data-step="3">
+        <p class="eyebrow">Schritt 3</p>
+        <h2 id="credential-form-title">Credential-Daten</h2>
+        <div id="provider-context" class="provider-context"></div>
+        <section id="credential-method-selection" class="credential-method-selection" aria-live="polite"></section>
+        <form id="credential-form" class="form"></form>
+        <section id="connection-test-panel" class="connection-test-panel" aria-live="polite"></section>
+      </section>
+
+      <section class="wizard-step hidden" data-step="4" data-oauth-step="authorize">
+        <p class="eyebrow">Schritt 4</p>
+        <h2>OAuth-Autorisierung vorbereiten</h2>
+        <div id="oauth-authorization" class="oauth-authorization"></div>
+      </section>
+
+      <section class="wizard-step hidden" data-step="5">
+        <p class="eyebrow">Schritt 5</p>
+        <h2>Zusammenfassung</h2>
+        <div id="summary" class="summary"></div>
+        <div class="actions">
+          <button class="secondary" type="button" data-action="back">Zurück</button>
+          <button class="primary" type="button" id="create-credential" data-testid="credential-wizard-create">Credential anlegen</button>
+          <a class="primary hidden" id="oauth-start" href="#">OAuth starten</a>
+        </div>
+        <pre id="create-result" class="result hidden"></pre>
+        <section id="consumer-grant-panel" class="consumer-grant-panel hidden" aria-live="polite"></section>
+      </section>
+
+      <nav class="actions" aria-label="Wizard-Navigation">
+        <button class="secondary" type="button" data-action="back" data-testid="credential-wizard-back">Zurück</button>
+        <button class="primary" type="button" data-action="next" data-testid="credential-wizard-next">Weiter</button>
+      </nav>
+    </section>
+  </main>
+
+  <footer class="app-footer" id="app-footer"></footer>
+  <script type="module" src="./wizard.js"></script>
+</body>
+</html>

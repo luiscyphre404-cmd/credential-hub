@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Credential HUB – API Tokens</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+<header class="app-header">
+  <div>
+    <p class="eyebrow">Credential HUB</p>
+    <h1>API Tokens</h1>
+  </div>
+
+  <nav class="app-nav" id="app-navigation"></nav>
+
+  <span class="badge" id="api-token-status">API Tokens werden geladen…</span>
+</header>
+
+<main class="layout dashboard-layout">
+
+<section class="panel">
+  <div class="toolbar split-toolbar">
+    <a class="secondary" href="#" data-app-path="/admin/dashboard.html">Zurück zum Dashboard</a>
+    <div class="toolbar-actions">
+      <button class="primary" type="button" id="create-api-token-open" data-testid="api-token-create-open">API-Token erstellen</button>
+      <button class="secondary" type="button" id="refresh-api-tokens" data-testid="api-token-refresh">Aktualisieren</button>
+    </div>
+  </div>
+
+  <div id="api-token-error" class="alert hidden" role="alert"></div>
+
+  <section class="dashboard-section" aria-labelledby="api-token-overview-heading">
+    <p class="eyebrow" data-i18n="apiTokens.securityAccess">Security & Access</p>
+    <h2 id="api-token-overview-heading" data-i18n="apiTokens.overview">API-Token-Übersicht</h2>
+    <p data-i18n="apiTokens.overviewHelp">Diese Übersicht zeigt technische REST-API-Zugriffe. Token-Klartexte und Token-Hashes werden hier nicht angezeigt.</p>
+    <div class="grant-access-card" aria-labelledby="api-token-purpose-heading">
+      <h3 id="api-token-purpose-heading" data-i18n="apiTokens.purposeTitle">What is an API token?</h3>
+      <p data-i18n="apiTokens.purposeHelp">API tokens authenticate applications against Credential HUB.</p>
+      <p data-i18n="apiTokens.scopeHelp">A scope describes the type of access requested by the token. Scopes come from the token configuration and are shown here so you can verify which scopes are used.</p>
+      <p data-i18n="apiTokens.grantRelationship">API token: authenticates a consumer against the HUB. Consumer grant: defines which credentials that consumer may use.</p>
+    </div>
+
+    <div class="table-card">
+      <table class="data-table" aria-label="API Tokens">
+        <thead>
+          <tr>
+            <th data-i18n="common.name">Name</th>
+            <th data-i18n="apiTokens.consumer">Consumer</th>
+            <th data-i18n="apiTokens.credential">Credential</th>
+            <th data-i18n="common.status">Status</th>
+            <th data-i18n="apiTokens.prefix">Prefix</th>
+            <th data-i18n="common.scopes">Scopes</th>
+            <th data-i18n="apiTokens.created">Erstellt</th>
+            <th data-i18n="apiTokens.expires">Ablauf</th>
+            <th data-i18n="apiTokens.lastUsed">Letzte Nutzung</th>
+            <th data-i18n="common.actions">Aktionen</th>
+          </tr>
+        </thead>
+        <tbody id="api-token-table-body">
+          <tr><td colspan="10" data-i18n="apiTokens.loading">API Tokens werden geladen…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel-dialog hidden" id="create-api-token-panel" aria-labelledby="create-api-token-heading">
+    <div class="dialog-card">
+      <div class="split-toolbar">
+        <div>
+          <p class="eyebrow">Neuer REST-Zugriff</p>
+          <h2 id="create-api-token-heading">API-Token erstellen</h2>
+        </div>
+        <button class="secondary" type="button" id="create-api-token-close">Schließen</button>
+      </div>
+
+      <form class="form" id="create-api-token-form" data-testid="api-token-create-form">
+        <div class="field">
+          <label for="api-token-name">Name <span class="required-badge">Pflicht</span></label>
+          <input id="api-token-name" name="name" type="text" autocomplete="off" required placeholder="z. B. n8n Produktion" data-i18n-placeholder="apiTokens.namePlaceholder">
+          <small>Interner Anzeigename für diesen technischen Zugriff.</small>
+        </div>
+
+        <div class="field">
+          <label for="api-token-user-id">Benutzer-ID <span class="required-badge">Pflicht</span></label>
+          <input id="api-token-user-id" name="userId" type="text" autocomplete="username" required value="admin">
+          <small>Der Token authentifiziert diese Benutzer-ID; RBAC entscheidet weiterhin über Berechtigungen.</small>
+        </div>
+
+        <div class="field">
+          <label for="api-token-expires-at">Ablaufdatum</label>
+          <input id="api-token-expires-at" name="expiresAt" type="datetime-local">
+          <small>Optional. Ohne Ablaufdatum bleibt der Token aktiv, bis er widerrufen wird.</small>
+        </div>
+
+        <div class="field">
+          <label for="api-token-scopes">Scopes</label>
+          <textarea id="api-token-scopes" name="scopes" rows="3" placeholder="credentials:read
+credentials:write"></textarea>
+          <small>Optional. Ein Scope pro Zeile oder kommasepariert.</small>
+        </div>
+
+        <div id="create-api-token-error" class="alert hidden" role="alert"></div>
+
+        <div class="actions">
+          <button class="secondary" type="button" id="create-api-token-cancel">Abbrechen</button>
+          <button class="primary" type="submit" id="create-api-token-submit" data-testid="api-token-create-submit">API-Token erstellen</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="panel-dialog hidden" id="created-api-token-panel" aria-labelledby="created-api-token-heading">
+    <div class="dialog-card success-card">
+      <p class="eyebrow">Einmalige Anzeige</p>
+      <h2 id="created-api-token-heading">API-Token wurde erstellt</h2>
+      <p class="oauth-info">Kopiere den Token jetzt und speichere ihn sicher. Er wird nach dem Schließen nicht erneut angezeigt.</p>
+      <label class="field" for="created-api-token-value">
+        <span>Token-Klartext</span>
+      <textarea id="created-api-token-value" rows="3" readonly></textarea>
+      <p id="created-api-token-redaction">[REDACTED]</p>
+      </label>
+      <div class="actions">
+        <button class="secondary" type="button" id="copy-created-api-token">Token kopieren</button>
+        <button class="primary" type="button" id="close-created-api-token">Verstanden</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel-dialog hidden" id="revoke-api-token-panel" aria-labelledby="revoke-api-token-heading">
+    <div class="dialog-card danger-card">
+      <div class="split-toolbar">
+        <div>
+          <p class="eyebrow">Zugriff widerrufen</p>
+          <h2 id="revoke-api-token-heading">API-Token widerrufen</h2>
+        </div>
+        <button class="secondary" type="button" id="revoke-api-token-close">Schließen</button>
+      </div>
+
+      <p id="revoke-api-token-message">Dieser API-Token wird sofort für REST-Zugriffe gesperrt.</p>
+      <p class="oauth-info">Der Token-Klartext kann danach nicht wiederhergestellt werden. Bestehende Clients müssen einen neuen Token erhalten.</p>
+
+      <div id="revoke-api-token-error" class="alert hidden" role="alert"></div>
+
+      <div class="actions">
+        <button class="secondary" type="button" id="revoke-api-token-cancel">Abbrechen</button>
+        <button class="danger" type="button" id="revoke-api-token-confirm">API-Token widerrufen</button>
+      </div>
+    </div>
+  </section>
+</section>
+
+</main>
+
+<footer class="app-footer" id="app-footer"></footer>
+<script type="module" src="./api-tokens.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,129 @@
+import { OAuthResult } from '../../models/oauth-result.js';
+import { HealthResult } from '../../models/health-result.js';
+import { oauthConfigurationValue } from '../oauth-provider-configuration.js';
+
+const DEFAULT_SCOPES = Object.freeze([
+  'user:read:email'
+]);
+
+export class TwitchOAuthService {
+  constructor({ apiClient, config }) {
+    this.apiClient = apiClient;
+    this.config = config;
+    this.authorizationUrl = 'https://id.twitch.tv/oauth2/authorize';
+  }
+
+  getAuthorizationUrl({ state = null, scopes = DEFAULT_SCOPES, providerConfiguration = null } = {}) {
+    const url = new URL(this.authorizationUrl);
+
+    url.searchParams.set('client_id', oauthConfigurationValue({ providerConfiguration, field: 'clientId', config: this.config, environmentKey: 'TWITCH_CLIENT_ID' }));
+    url.searchParams.set('redirect_uri', oauthConfigurationValue({ providerConfiguration, field: 'redirectUri', config: this.config, environmentKey: 'TWITCH_REDIRECT_URI' }));
+    url.searchParams.set('response_type', 'code');
+    url.searchParams.set('scope', scopes.join(' '));
+
+    if (state) {
+      url.searchParams.set('state', state);
+    }
+
+    return url.toString();
+  }
+
+  async authenticate({ code, redirectUri = null, providerConfiguration = null }) {
+    const finalRedirectUri =
+      redirectUri ?? oauthConfigurationValue({ providerConfiguration, field: 'redirectUri', config: this.config, environmentKey: 'TWITCH_REDIRECT_URI' });
+
+    const token = await this.apiClient.exchangeCodeForToken({
+      code,
+      redirectUri: finalRedirectUri,
+      ...(providerConfiguration ? { providerConfiguration } : {})
+    });
+
+    const user = await this.apiClient.getCurrentUser({
+      accessToken: token.access_token,
+      ...(providerConfiguration ? { providerConfiguration } : {})
+    });
+
+    return this.#createOAuthResult({ token, user });
+  }
+
+  async refresh({ refreshToken, providerConfiguration = null }) {
+    const token = await this.apiClient.refreshAccessToken({ refreshToken, ...(providerConfiguration ? { providerConfiguration } : {}) });
+
+    const user = await this.apiClient.getCurrentUser({
+      accessToken: token.access_token,
+      ...(providerConfiguration ? { providerConfiguration } : {})
+    });
+
+    return this.#createOAuthResult({
+      token: {
+        ...token,
+        refresh_token: token.refresh_token ?? refreshToken
+      },
+      user
+    });
+  }
+
+  async healthCheck({ accessToken }) {
+    try {
+      const validation = await this.apiClient.validateAccessToken({ accessToken });
+
+      return new HealthResult({
+        healthy: true,
+        status: 'ok',
+        message: `Twitch credential valid for ${validation.login ?? validation.user_id}`
+      });
+    } catch (error) {
+      return new HealthResult({
+        healthy: false,
+        status: 'failed',
+        message: error.message
+      });
+    }
+  }
+
+  #createOAuthResult({ token, user }) {
+    const accountName = user.display_name ?? user.login ?? null;
+
+    return new OAuthResult({
+      providerId: `twitch:${user.id}`,
+      provider: 'twitch',
+      accountId: user.id,
+      accountName,
+      accessToken: token.access_token,
+      refreshToken: token.refresh_token ?? null,
+      expiresAt: this.#calculateExpiresAt(token.expires_in),
+      scopes: this.#parseScopes(token.scope),
+      metadata: {
+        tokenType: token.token_type ?? null,
+        login: user.login ?? null,
+        displayName: user.display_name ?? null,
+        email: user.email ?? null,
+        profileImageUrl: user.profile_image_url ?? null,
+        broadcasterType: user.broadcaster_type ?? null
+      }
+    });
+  }
+
+  #parseScopes(scope) {
+    if (!scope) {
+      return [];
+    }
+
+    if (Array.isArray(scope)) {
+      return scope.map((value) => String(value).trim()).filter(Boolean);
+    }
+
+    return String(scope)
+      .split(' ')
+      .map((value) => value.trim())
+      .filter(Boolean);
+  }
+
+  #calculateExpiresAt(expiresIn) {
+    if (!expiresIn) {
+      return null;
+    }
+
+    return new Date(Date.now() + Number(expiresIn) * 1000);
+  }
+}

@@ -1,0 +1,77 @@
+export class ApiTokenController {
+  constructor({ apiTokenService }) {
+    if (!apiTokenService?.createToken || !apiTokenService?.listTokens) {
+      throw new Error('ApiTokenController requires ApiTokenService');
+    }
+
+    this.apiTokenService = apiTokenService;
+  }
+
+  async list(req, res) {
+    try {
+      const data = await this.apiTokenService.listTokens();
+      this.#sendSuccess(res, data);
+    } catch (error) {
+      this.#sendError(res, error);
+    }
+  }
+
+  async get(req, res) {
+    try {
+      const data = await this.apiTokenService.getToken(req.params.tokenId);
+      this.#sendSuccess(res, data);
+    } catch (error) {
+      this.#sendError(res, error);
+    }
+  }
+
+  async create(req, res) {
+    try {
+      const created = await this.apiTokenService.createToken({
+        ...(req.body ?? {}),
+        createdBy: this.#userIdFromRequest(req)
+      });
+
+      this.#sendSuccess(res, {
+        token: created.token,
+        apiToken: created.publicToken
+      }, 201);
+    } catch (error) {
+      this.#sendError(res, error);
+    }
+  }
+
+  async revoke(req, res) {
+    try {
+      const data = await this.apiTokenService.revokeToken(req.params.tokenId);
+      this.#sendSuccess(res, data);
+    } catch (error) {
+      this.#sendError(res, error);
+    }
+  }
+
+  #userIdFromRequest(req) {
+    return req.auth?.userId ?? req.headers?.['x-credential-hub-user'] ?? null;
+  }
+
+  #sendSuccess(res, data, statusCode = 200) {
+    res.status(statusCode).json({
+      success: true,
+      meta: { apiVersion: 'v1' },
+      data
+    });
+  }
+
+  #sendError(res, error) {
+    const statusCode = error.statusCode ?? 500;
+    const code = error.code ?? (statusCode === 404 ? 'NOT_FOUND' : statusCode === 403 ? 'FORBIDDEN' : statusCode === 401 ? 'UNAUTHORIZED' : statusCode === 400 ? 'BAD_REQUEST' : 'INTERNAL_ERROR');
+
+    res.status(statusCode).json({
+      success: false,
+      error: {
+        code,
+        message: error.message ?? 'Unexpected error'
+      }
+    });
+  }
+}

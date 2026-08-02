@@ -1,0 +1,32 @@
+{
+  "name": "credential-hub",
+  "version": "1.0.0-beta.1",
+  "description": "Open Source credential lifecycle management platform.",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "author": "cyphre-san productions",
+  "homepage": "https://github.com/luiscyphre404-cmd/credential-hub#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/luiscyphre404-cmd/credential-hub.git"
+  },
+  "bugs": {
+    "url": "https://github.com/luiscyphre404-cmd/credential-hub/issues"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "oauth": "node src/cli/run-oauth.js",
+    "refresh": "node src/cli/run-refresh.js",
+    "check": "node --check src/index.js && node --check src/bootstrap.js && node --check src/cli/run-oauth.js && node --check src/cli/run-refresh.js"
+  },
+  "dependencies": {
+    "ajv": "^8.20.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "yaml": "^2.9.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1"
+  }
+}

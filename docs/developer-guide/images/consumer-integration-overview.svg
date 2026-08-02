@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="1480" viewBox="0 0 980 1480" role="img" aria-labelledby="title desc">
+  <title id="title">Credential HUB Consumer integration overview</title>
+  <desc id="desc">The integration flow from administrator setup through Credential HUB, Discovery, credentialKey selection, Resolve, target API use and secure disposal.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker>
+    <style>
+      .box{stroke-width:3;rx:18} .label{font:600 27px system-ui,sans-serif;fill:#172033} .small{font:22px system-ui,sans-serif;fill:#334155} .title{font:700 38px system-ui,sans-serif;fill:#111827} .arrow{stroke:#334155;stroke-width:4;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="980" height="1480" fill="#f8fafc"/>
+  <text x="490" y="64" text-anchor="middle" class="title">Consumer Integration Overview</text>
+  <text x="490" y="101" text-anchor="middle" class="small">Beta-1 supported Advanced Integration Flow</text>
+  <rect x="110" y="145" width="760" height="112" class="box" fill="#ede9fe" stroke="#7c3aed"/>
+  <text x="490" y="193" text-anchor="middle" class="label">Administrator setup</text><text x="490" y="229" text-anchor="middle" class="small">Credential + Consumer token + Grant</text>
+  <line x1="490" y1="257" x2="490" y2="312" class="arrow"/>
+  <rect x="110" y="320" width="760" height="130" class="box" fill="#e0f2fe" stroke="#0284c7"/>
+  <text x="490" y="373" text-anchor="middle" class="label">Credential HUB Consumer API</text><text x="490" y="411" text-anchor="middle" class="small">Authentication and grant enforcement</text>
+  <line x1="490" y1="450" x2="490" y2="505" class="arrow"/>
+  <rect x="110" y="513" width="760" height="112" class="box" fill="#dcfce7" stroke="#16a34a"/>
+  <text x="490" y="560" text-anchor="middle" class="label">Discovery</text><text x="490" y="597" text-anchor="middle" class="small">Public metadata and Field Contract</text>
+  <line x1="490" y1="625" x2="490" y2="680" class="arrow"/>
+  <rect x="110" y="688" width="760" height="112" class="box" fill="#dcfce7" stroke="#16a34a"/>
+  <text x="490" y="735" text-anchor="middle" class="label">Select credentialKey</text><text x="490" y="772" text-anchor="middle" class="small">Opaque public selection identifier</text>
+  <line x1="490" y1="800" x2="490" y2="855" class="arrow"/>
+  <rect x="110" y="863" width="760" height="112" class="box" fill="#fef3c7" stroke="#d97706"/>
+  <text x="490" y="910" text-anchor="middle" class="label">Resolve</text><text x="490" y="947" text-anchor="middle" class="small">Only explicitly authorized Secret fields</text>
+  <line x1="490" y1="975" x2="490" y2="1030" class="arrow"/>
+  <rect x="110" y="1038" width="760" height="112" class="box" fill="#f1f5f9" stroke="#475569"/>
+  <text x="490" y="1085" text-anchor="middle" class="label">Target API</text><text x="490" y="1122" text-anchor="middle" class="small">Use the value for the immediate operation</text>
+  <line x1="490" y1="1150" x2="490" y2="1205" class="arrow"/>
+  <rect x="110" y="1213" width="760" height="112" class="box" fill="#fce7f3" stroke="#db2777"/>
+  <text x="490" y="1260" text-anchor="middle" class="label">Secure disposal</text><text x="490" y="1297" text-anchor="middle" class="small">Do not persist, log or replay resolved values</text>
+  <rect x="110" y="1360" width="760" height="72" class="box" fill="#fff" stroke="#94a3b8"/>
+  <text x="490" y="1405" text-anchor="middle" class="small">Security boundary: HUB authorizes; Consumer Runtime disposes</text>
+</svg>
