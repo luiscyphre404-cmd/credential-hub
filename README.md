@@ -1,3 +1,4 @@
+<img width="864" height="1821" alt="Codex-Bild 2  Aug  2026, 19_57_40" src="https://github.com/user-attachments/assets/66985fe9-6bae-4261-981e-c3280d666855" />
 # Credential HUB
 
 Credential HUB is an open-source platform for managing the lifecycle of digital credentials. It provides an Admin UI for creating and managing provider credentials, OAuth connections, API tokens, encrypted imports and exports, and lifecycle status.
