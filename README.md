@@ -13,6 +13,18 @@ Credential HUB is an open-source platform for managing the lifecycle of digital 
 
 The public [Developer Guide](docs/developer-guide/index.md) and [Configuration Reference](docs/configuration-reference/index.md) describe these boundaries in detail.
 
+## Current Beta-1 Limitations
+
+Credential HUB Public Beta 1 focuses on the core credential platform and its documented HTTP interfaces. The following boundaries are intentional and part of the current Beta-1 scope:
+
+- There are no native integrations for n8n or other workflow and automation platforms. Runtimes use the generic Consumer API; n8n is an HTTP client and does not receive a privileged integration path.
+- The Consumer interface is a supported Advanced Integration Flow, but it is not a Consumer-first onboarding flow. An administrator must first prepare the Credential, a dedicated Consumer API token, and an explicit grant for the permitted Secret fields.
+- Public Beta 1 does not provide an interactive username/password login screen. Initial administrator bootstrap is performed through the local Management API.
+- Custom providers are declarative only. They can define provider metadata, methods, bindings, and field schemas, but they do not add OAuth configuration, executable adapters, runtime operations, hooks, scripts, or provider secrets.
+- The standard Release-1.0 image does not provide a production FTP or SFTP transport adapter. It must not be represented as providing live FTP/SFTP validation, file transfer, TLS verification, or SSH host-key verification.
+
+Known improvements are tracked separately from this README. No future capability is implied by the limitations listed here.
+
 ## Public Beta quick start
 
 ### Prerequisites
