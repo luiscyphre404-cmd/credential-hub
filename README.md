@@ -104,6 +104,10 @@ npm run check
 
 Set the required runtime environment before starting `node src/index.js`; the [Installation Guide](docs/installation-guide/index.md) describes both local and Compose operation.
 
+## Examples
+
+Official n8n example workflows are available in [examples/n8n/](examples/n8n/).
+
 ## Documentation
 
 - [Installation Guide](docs/installation-guide/index.md)
